@@ -23,6 +23,7 @@ async function run(): Promise<void> {
       shortSha = fullSha.substring(0, 7)
       branchName = process.env.GITHUB_HEAD_REF
     } else if (context.eventName === 'issue_comment') {
+      core.debug('issue comment')
       const token = core.getInput('github-token', {required: true})
       const octokit = getOctokit(token)
       const pr = await octokit.rest.pulls.get({
@@ -30,8 +31,9 @@ async function run(): Promise<void> {
         repo: context.repo.repo,
         pull_number: context.issue.number
       })
-      core.debug('issue comment')
-      core.debug(JSON.stringify(pr, null, 2))
+
+      fullSha = pr.data.head.sha
+      shortSha = fullSha.substring(0, 7)
       branchName = pr.data.head.ref
     } else {
       core.debug('catch all, most likely master')

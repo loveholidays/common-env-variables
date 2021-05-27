@@ -57,6 +57,7 @@ function run() {
                 branchName = process.env.GITHUB_HEAD_REF;
             }
             else if (github_1.context.eventName === 'issue_comment') {
+                core.debug('issue comment');
                 const token = core.getInput('github-token', { required: true });
                 const octokit = github_1.getOctokit(token);
                 const pr = yield octokit.rest.pulls.get({
@@ -64,8 +65,8 @@ function run() {
                     repo: github_1.context.repo.repo,
                     pull_number: github_1.context.issue.number
                 });
-                core.debug('issue comment');
-                core.debug(JSON.stringify(pr, null, 2));
+                fullSha = pr.data.head.sha;
+                shortSha = fullSha.substring(0, 7);
                 branchName = pr.data.head.ref;
             }
             else {
