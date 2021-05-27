@@ -49,7 +49,7 @@ function run() {
             let shortSha;
             let branchName;
             if (isPullRequest) {
-                // pull request
+                core.debug('is pull request');
                 const payload = github_1.context.payload;
                 payload.pull_request.head.sha;
                 fullSha = payload.pull_request.head.sha || '';
@@ -64,12 +64,12 @@ function run() {
                     repo: github_1.context.repo.repo,
                     pull_number: github_1.context.issue.number
                 });
-                core.debug('>>>>>>');
+                core.debug('issue comment');
                 core.debug(JSON.stringify(pr, null, 2));
                 branchName = pr.data.head.ref;
             }
             else {
-                // push to master
+                core.debug('catch all, most likely master');
                 fullSha = process.env.GITHUB_SHA || '';
                 shortSha = fullSha.substring(0, 7);
                 branchName = (_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').slice(2).join('/').replace(/\//g, '-');

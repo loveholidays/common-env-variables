@@ -4,3 +4,7 @@ author: 'Your name or organization here'
 runs:
   using: 'node12'
   main: 'dist/index.js'
+inputs:
+  github-token:
+    default: ${{github.token}}
+    required: false

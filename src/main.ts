@@ -15,7 +15,7 @@ async function run(): Promise<void> {
     let branchName
 
     if (isPullRequest) {
-      // pull request
+      core.debug('is pull request')
       const payload = context.payload as PullRequestEvent
       payload.pull_request.head.sha
 
@@ -30,11 +30,11 @@ async function run(): Promise<void> {
         repo: context.repo.repo,
         pull_number: context.issue.number
       })
-      core.debug('>>>>>>')
+      core.debug('issue comment')
       core.debug(JSON.stringify(pr, null, 2))
       branchName = pr.data.head.ref
     } else {
-      // push to master
+      core.debug('catch all, most likely master')
       fullSha = process.env.GITHUB_SHA || ''
       shortSha = fullSha.substring(0, 7)
       branchName = process.env.GITHUB_REF?.split('/')
