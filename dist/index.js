@@ -47,7 +47,10 @@ function run() {
             let shortSha;
             let branchName;
             if (isPullRequest) {
-                //
+                // pull request
+                branchName = process.env.GITHUB_HEAD_REF;
+                fullSha = process.env.GITHUB_SHA || '';
+                shortSha = fullSha.substring(0, 7);
             }
             else {
                 // push to master

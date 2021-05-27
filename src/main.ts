@@ -11,7 +11,10 @@ async function run(): Promise<void> {
     let branchName
 
     if (isPullRequest) {
-      //
+      // pull request
+      branchName = process.env.GITHUB_HEAD_REF
+      fullSha = process.env.GITHUB_SHA || ''
+      shortSha = fullSha.substring(0, 7)
     } else {
       // push to master
       fullSha = process.env.GITHUB_SHA || ''
