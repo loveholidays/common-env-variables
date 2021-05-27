@@ -50,9 +50,11 @@ function run() {
             let branchName;
             if (isPullRequest) {
                 // pull request
-                branchName = process.env.GITHUB_HEAD_REF;
-                fullSha = process.env.GITHUB_SHA || '';
+                const payload = github_1.context.payload;
+                payload.pull_request.head.sha;
+                fullSha = payload.pull_request.head.sha || '';
                 shortSha = fullSha.substring(0, 7);
+                branchName = process.env.GITHUB_HEAD_REF;
             }
             else {
                 // push to master
