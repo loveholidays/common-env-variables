@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import {context} from '@actions/github'
+import {PullRequestEvent} from '@octokit/webhooks-definitions/schema'
 
 async function run(): Promise<void> {
   try {
@@ -15,9 +16,12 @@ async function run(): Promise<void> {
 
     if (isPullRequest) {
       // pull request
-      branchName = process.env.GITHUB_HEAD_REF
-      fullSha = process.env.GITHUB_SHA || ''
+      const payload = context.payload as PullRequestEvent
+      payload.pull_request.head.sha
+
+      fullSha = payload.pull_request.head.sha || ''
       shortSha = fullSha.substring(0, 7)
+      branchName = process.env.GITHUB_HEAD_REF
     } else {
       // push to master
       fullSha = process.env.GITHUB_SHA || ''
