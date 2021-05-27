@@ -38,10 +38,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(186));
 function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.debug(JSON.stringify(process.env, null, 2)); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-            core.setOutput('time', new Date().toTimeString());
+            const isPullRequest = !!process.env.GITHUB_HEAD_REF; //GITHUB_HEAD_REF is only set for pull request events https://docs.github.com/en/actions/reference/environment-variables
+            let fullSha;
+            let shortSha;
+            let branchName;
+            if (isPullRequest) {
+                //
+            }
+            else {
+                // push to master
+                fullSha = process.env.GITHUB_SHA || '';
+                shortSha = fullSha.substring(0, 7);
+                branchName = (_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').slice(2).join('/').replace(/\//g, '-');
+            }
+            core.exportVariable('FULL_SHA', fullSha);
+            core.exportVariable('SHORT_SHA', shortSha);
+            core.exportVariable('BRANCH_NAME', branchName);
         }
         catch (error) {
             core.setFailed(error.message);

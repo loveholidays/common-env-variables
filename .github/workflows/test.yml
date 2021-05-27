@@ -20,5 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: ./
-        env:
-          ACTIONS_STEP_DEBUG: true
+      - name: log common env vars
+        run: |
+          echo $FULL_SHA
+          echo $SHORT_SHA
+          echo $BRANCH_NAME
