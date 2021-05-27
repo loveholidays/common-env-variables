@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {context} from '@actions/github'
+import {context, getOctokit} from '@actions/github'
 import {PullRequestEvent} from '@octokit/webhooks-definitions/schema'
 
 async function run(): Promise<void> {
@@ -22,6 +22,17 @@ async function run(): Promise<void> {
       fullSha = payload.pull_request.head.sha || ''
       shortSha = fullSha.substring(0, 7)
       branchName = process.env.GITHUB_HEAD_REF
+    } else if (context.eventName === 'issue_comment') {
+      const token = core.getInput('github-token', {required: true})
+      const octokit = getOctokit(token)
+      const pr = await octokit.rest.pulls.get({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        pull_number: context.issue.number
+      })
+      core.debug('>>>>>>')
+      core.debug(JSON.stringify(pr, null, 2))
+      branchName = pr.data.head.ref
     } else {
       // push to master
       fullSha = process.env.GITHUB_SHA || ''

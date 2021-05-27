@@ -18,6 +18,8 @@ jobs:
       - run: |
           npm run all
   test: # make sure the action works on a clean machine without building
+    env:
+      GITHUB_TOKEN: ${{ secrets.LOVEHOLIDAYS_BUILD_PAT }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

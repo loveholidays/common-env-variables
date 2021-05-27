@@ -56,6 +56,18 @@ function run() {
                 shortSha = fullSha.substring(0, 7);
                 branchName = process.env.GITHUB_HEAD_REF;
             }
+            else if (github_1.context.eventName === 'issue_comment') {
+                const token = core.getInput('github-token', { required: true });
+                const octokit = github_1.getOctokit(token);
+                const pr = yield octokit.rest.pulls.get({
+                    owner: github_1.context.repo.owner,
+                    repo: github_1.context.repo.repo,
+                    pull_number: github_1.context.issue.number
+                });
+                core.debug('>>>>>>');
+                core.debug(JSON.stringify(pr, null, 2));
+                branchName = pr.data.head.ref;
+            }
             else {
                 // push to master
                 fullSha = process.env.GITHUB_SHA || '';
@@ -72,7 +84,6 @@ function run() {
     });
 }
 run();
-//
 
 
 /***/ }),
