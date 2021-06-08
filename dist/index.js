@@ -77,7 +77,7 @@ function run() {
             }
             core.exportVariable('FULL_SHA', fullSha);
             core.exportVariable('SHORT_SHA', shortSha);
-            core.exportVariable('BRANCH_NAME', branchName);
+            core.exportVariable('BRANCH_NAME', branchName === null || branchName === void 0 ? void 0 : branchName.replace(/\//g, '-'));
         }
         catch (error) {
             core.setFailed(error.message);
