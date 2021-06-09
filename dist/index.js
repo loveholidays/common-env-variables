@@ -73,11 +73,12 @@ function run() {
                 core.debug('catch all, most likely master');
                 fullSha = process.env.GITHUB_SHA || '';
                 shortSha = fullSha.substring(0, 7);
-                branchName = (_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').slice(2).join('/').replace(/\//g, '-');
+                branchName = (_a = process.env.GITHUB_REF) === null || _a === void 0 ? void 0 : _a.split('/').slice(2).join('/').replace(/[^0-9a-z]/g, '-');
             }
             core.exportVariable('FULL_SHA', fullSha);
             core.exportVariable('SHORT_SHA', shortSha);
-            core.exportVariable('BRANCH_NAME', branchName === null || branchName === void 0 ? void 0 : branchName.replace(/\//g, '-'));
+            core.exportVariable('ORIGINAL_BRANCH_NAME', branchName);
+            core.exportVariable('BRANCH_NAME', branchName === null || branchName === void 0 ? void 0 : branchName.replace(/[^0-9a-z]/g, '-'));
         }
         catch (error) {
             core.setFailed(error.message);
