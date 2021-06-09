@@ -48,7 +48,10 @@ async function run(): Promise<void> {
     core.exportVariable('FULL_SHA', fullSha)
     core.exportVariable('SHORT_SHA', shortSha)
     core.exportVariable('ORIGINAL_BRANCH_NAME', branchName)
-    core.exportVariable('BRANCH_NAME', branchName?.replace(/[^0-9a-z]/g, '-'))
+    core.exportVariable(
+      'SAFE_BRANCH_NAME',
+      branchName?.replace(/[^0-9a-z]/g, '-')
+    )
   } catch (error) {
     core.setFailed(error.message)
   }
