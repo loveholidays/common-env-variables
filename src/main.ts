@@ -42,12 +42,16 @@ async function run(): Promise<void> {
       branchName = process.env.GITHUB_REF?.split('/')
         .slice(2)
         .join('/')
-        .replace(/\//g, '-')
+        .replace(/[^0-9a-z]/g, '-')
     }
 
     core.exportVariable('FULL_SHA', fullSha)
     core.exportVariable('SHORT_SHA', shortSha)
-    core.exportVariable('BRANCH_NAME', branchName?.replace(/\//g, '-'))
+    core.exportVariable('ORIGINAL_BRANCH_NAME', branchName)
+    core.exportVariable(
+      'SAFE_BRANCH_NAME',
+      branchName?.replace(/[^0-9a-z]/g, '-')
+    )
   } catch (error) {
     core.setFailed(error.message)
   }
