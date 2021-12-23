@@ -42,7 +42,7 @@ async function run(): Promise<void> {
       branchName = process.env.GITHUB_REF?.split('/')
         .slice(2)
         .join('/')
-        .replace(/[^0-9a-z]/g, '-')
+        .replace(/[^0-9a-zA-Z]/g, '-')
     }
 
     core.exportVariable('FULL_SHA', fullSha)
