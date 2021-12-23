@@ -50,7 +50,7 @@ async function run(): Promise<void> {
     core.exportVariable('ORIGINAL_BRANCH_NAME', branchName)
     core.exportVariable(
       'SAFE_BRANCH_NAME',
-      branchName?.replace(/[^0-9a-z]/g, '-')
+      branchName?.replace(/[^0-9a-zA-Z]/g, '-')
     )
   } catch (error) {
     core.setFailed(error.message)
